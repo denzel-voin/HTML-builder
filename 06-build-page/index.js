@@ -102,32 +102,32 @@ function replaceTemplateTags(template, callback) {
 function buildStyleFile(callback) {
   // Получаем список файлов стилей
   fs.readdir(STYLES_DIR, (err, files) => {
-  if (err) {
-  callback(err);
-  return;
-  }
-  // Фильтруем только файлы с расширением .css
-const cssFiles = files.filter((file) => path.extname(file) === '.css');
-
-// Считываем содержимое каждого файла и объединяем в одну строку
-let result = '';
-let remaining = cssFiles.length;
-cssFiles.forEach((file) => {
-  const filePath = path.join(STYLES_DIR, file);
-  fs.readFile(filePath, 'utf8', (err, content) => {
     if (err) {
       callback(err);
       return;
     }
+    // Фильтруем только файлы с расширением .css
+    const cssFiles = files.filter((file) => path.extname(file) === '.css');
 
-    result += content;
-    remaining--;
-    if (remaining === 0) {
-      callback(null, result);
-    }
+    // Считываем содержимое каждого файла и объединяем в одну строку
+    let result = '';
+    let remaining = cssFiles.length;
+    cssFiles.forEach((file) => {
+      const filePath = path.join(STYLES_DIR, file);
+      fs.readFile(filePath, 'utf8', (err, content) => {
+        if (err) {
+          callback(err);
+          return;
+        }
+
+        result += content;
+        remaining--;
+        if (remaining === 0) {
+          callback(null, result);
+        }
+      });
+    });
   });
-});
-});
 }
 //Копируем папку assets
 function copyAssetsDirectory(callback) {
